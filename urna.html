@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    <title>Urna Eletrônica</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: hsl(45, 16%, 75%);
+        }
+        .urna {
+            background: #d6d3d3;
+            border: 2px solid #000;
+            width: 750px;
+            padding: 40px 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+        .tela {
+            background: rgb(255, 255, 255);
+            border: 2px solid #000;
+            padding: 20px;
+            width: 380px;
+            height: 280px;
+            text-align: left;
+        }
+        .numero {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        .teclado {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            
+        }
+        .quadrado {
+            width: 60px;
+            height: 40px;
+            border: 1px solid #000;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+        }
+        .teclado div {
+            width: 60px;
+            height: 60px;
+            background: #232425;
+            color: #fff;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .teclado--numero-zero {
+            grid-column: 1 / span 3;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .opcoes {
+            display: flex;
+            justify-content: space-between;
+            grid-column: 1 / span 3; /* Alinha os botões abaixo do "0" e ocupa a largura completa */
+        }
+        .opcoes button {
+            width: 100px;
+            height: 50px;
+            font-size: 16px;
+        }
+        .botao--branco {
+            background-color: white;
+            color: black;
+        }
+        .botao--corrige {
+            background-color: orange;
+            color: white;
+        }
+        .botao--confirma {
+            background-color: green;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="urna">
+        <div class="tela">
+            <h2><p class="text-success text-uppercase">VOTO PARA PREFEITO</p></h2>
+            <div class="numero" id="numeroVotado">
+                <div class="quadrado" id="n1"></div>
+                <div class="quadrado" id="n2"></div>
+            </div>
+            <div class="info" id="infoCandidato"></div>
+        </div>
+        <div class="teclado">
+            <div onclick="clicou('1')">1</div>
+            <div onclick="clicou('2')">2</div>
+            <div onclick="clicou('3')">3</div>
+            <div onclick="clicou('4')">4</div>
+            <div onclick="clicou('5')">5</div>
+            <div onclick="clicou('6')">6</div>
+            <div onclick="clicou('7')">7</div>
+            <div onclick="clicou('8')">8</div>
+            <div onclick="clicou('9')">9</div>
+            <div class="teclado--numero-zero">
+                <div onclick="clicou('0')">0</div>
+            </div>
+            <div class="opcoes">
+                <button class="botao--branco" onclick="branco()">BRANCO</button>
+                <button class="botao--corrige" onclick="corrige()">CORRIGE</button>
+                <button class="botao--confirma" onclick="confirma()">CONFIRMA</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let numeroVotado = ''; 
+
+        function clicou(numero) {
+            numeroVotado += numero;
+            document.getElementById('numeroVotado').innerText = numeroVotado;
+            mostrarInformacoes();
+        }
+
+        function mostrarInformacoes() {
+            const infoCandidato = document.getElementById('infoCandidato');
+            if (numeroVotado === '22') {
+                infoCandidato.innerHTML = '<p>Nome: Abilio<br>Partido: PL<br>Vice: Coronel Vânia</p>';
+                infoCandidato.style.display = 'block';
+            } else if (numeroVotado === '13') {
+                infoCandidato.innerHTML = '<p>Nome: Ludio<br>Partido: PT<br>Vice: Rafaela Fávaro</p>';
+                infoCandidato.style.display = 'block';
+            } else {
+                infoCandidato.innerHTML = ''; // Limpar informações se o número não for reconhecido
+            }
+            infoCandidato.style.display = infoCandidato.innerHTML ? 'block' : 'none'; // Mostrar ou esconder
+        }
+
+        function branco() {
+            alert("Voto em branco!");
+        }
+
+        function corrige() {
+            numeroVotado = '';
+            document.getElementById('numeroVotado').innerText = '';
+            document.getElementById('infoCandidato').style.display = 'none';
+        }
+
+        function confirma() {
+            alert("Voto confirmado: " + numeroVotado);
+        }
+    </script>
+</body>
+</html>
